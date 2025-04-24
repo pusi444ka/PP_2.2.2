@@ -6,8 +6,8 @@ import java.util.List;
 
 public interface CarService {
 
-    public List<Car> getCars(int count);
+    public List<Car> getCarsWithLimit(Integer count);
 
-    public List<Car> getAllCars();
+    public Car getCarById(int id);
 }
 

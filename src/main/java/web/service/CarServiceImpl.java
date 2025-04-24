@@ -1,23 +1,26 @@
 package web.service;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import web.model.Car;
 
+import javax.persistence.EntityManager;
 import java.util.List;
 
 @Service
 public class CarServiceImpl implements CarService {
 
-    private List<Car> cars = List.of(
+    private final List<Car> cars = List.of(
             new Car(1, "BMW", 5),
             new Car(2, "Audi", 3),
             new Car(3, "Mercedes", 7),
             new Car(4, "Toyota", 6),
-            new Car(5, "Honda", 8));
+            new Car(5, "Honda", 8)
+    );
 
     @Override
-    public List<Car> getCars(int count) {
-        if (count >= 5) {
+    public List<Car> getCarsWithLimit(Integer count) {
+        if (count == null || count >= cars.size()) {
             return cars;
         }
         return cars.stream()
@@ -26,7 +29,10 @@ public class CarServiceImpl implements CarService {
     }
 
     @Override
-    public List<Car> getAllCars() {
-        return cars;
+    public Car getCarById(int id) {
+        return cars.stream()
+                .filter(car -> car.getId() == id)
+                .findFirst()
+                .orElseThrow(() -> new IllegalArgumentException("Car not found with ID: " + id));
     }
 }
